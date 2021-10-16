@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListLeagues from './Components/ListLeagues'
+import JoueursListe from'./Components/JoueursListe'
 
 export default class App extends React.Component {
   render() {
     return (
-      <ListLeagues/>
+      <JoueursListe/>
     )
   }
 }

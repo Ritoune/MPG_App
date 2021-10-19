@@ -1,29 +1,104 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import JoueursListe from './JoueursListe'
 
 class JoueurItem extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+          //ultraPosition: '',
+          isLoading: false
+        }
+      }
+
     render() {
-        console.log(this.props)
+        //console.log(this.props)
         const { joueur} = this.props
-        if (joueur.stats.averagerating=undefined)
+        
+
+        /*switch(joueur.ultraPosition){
+            case 10:
+            console.log("Gardien de but")
+            this.setState({ ultraPosition: 'G'})
+            break;
+
+            case 20:
+            this.setState({ ultraPosition: 'D'})
+            break;
+
+            case 21:
+            this.setState({ ultraPosition: 'L'})
+            break;
+
+            case 30:
+            this.setState({ ultraPosition: 'MD'})
+            break;
+
+            case 31:
+            this.setState({ ultraPosition: 'MO'})
+            break;
+
+            case 40:
+            this.setState({ ultraPosition: 'A'})
+            break;
+        }*/
+
+        var poste=''
+        switch(joueur.ultraPosition){
+            case 10:
+            poste='G'
+            break;
+
+            case 20:
+            poste='D'
+            break;
+
+            case 21:
+            poste='L'
+            break;
+
+            case 30:
+            poste='MD'
+            break;
+
+            case 31:
+            poste='MO'
+            break;
+
+            case 40:
+            poste='A'
+            break;
+        }
+
+        var noteRounded=0
+        if(joueur.stats.averageRating==undefined)
         {
-            noteROunded=0
+            noteRounded=0
         }
-        else {
-            const noteROunded=Math.round((joueur.stats.averageRating)*10)/10
-            console.log("Arrondi : "+noteROunded)
+        else
+        {
+            noteRounded=Math.round((joueur.stats.averageRating)*10)/10
         }
+
+        var buts=0
+        if(joueur.stats.totalGoals==undefined)
+        {
+            buts=0
+        }
+        else
+        {
+            buts=joueur.stats.totalGoals
+        }
+
         
 
         return (
           <TouchableOpacity style={styles.main_container} /*onPress={() => displayDetailForFilm(film.id)}*/>
             <View style={styles.playerContainer}> 
                 <Text style={styles.lastName}>{joueur.lastName}</Text>
-                <Text style={styles.others}>{Math.round((joueur.stats.averageRating)*10)/10}</Text>
-                <Text style={styles.others}>{joueur.stats.totalGoals}</Text>
-                <Text style={styles.others}>{joueur.ultraPosition}</Text>
+                <Text style={styles.others}>{noteRounded}</Text>
+                <Text style={styles.others}>{buts}</Text>
+                <Text style={styles.others}>{poste}</Text>
                 <Text style={styles.others}>{joueur.quotation}</Text>
             </View>
           </TouchableOpacity>

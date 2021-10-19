@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Button, FlatList, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, TextInput, Button, FlatList, ScrollView, ActivityIndicator, Text } from 'react-native'
 import JoueurItem from '../Components/JoueurItem'
 import { getAllPlayers } from '../API/API_Joueurs'
-
+import { TouchableOpacity } from 'react-native-gesture-handler'
 class JoueursListe extends React.Component {
 
     constructor(props) {
@@ -70,12 +70,23 @@ class JoueursListe extends React.Component {
         <View style={styles.main_container}>
           <TextInput
             style={styles.textinput}
-            placeholder='Titre du film'
+            placeholder='Nom du joueur'
             onChangeText={(text) => this._searchTextInputChanged(text)}
             onSubmitEditing={() => this._searchPlayers()}
           />
-          <Button title='Rechercher' onPress={() => this._searchPlayers()}/>
-          <FlatList
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => this._searchPlayers()}>
+              <Text style={styles.textButtonContainer}>Rechercher</Text>
+          </TouchableOpacity>
+
+          <View style={styles.joueursContainer}>
+            <Text style={styles.jerseyNameContainer}>Nom</Text>
+            <Text style={styles.others}>Note</Text>
+            <Text style={styles.others}>Buts</Text>
+            <Text style={styles.others}>Poste</Text>
+            <Text style={styles.others}>Cote</Text>
+          </View>
+          
+          <FlatList style={styles.container}
             data={this.state.joueurs}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({item}) => <JoueurItem joueur={item}/>}
@@ -95,7 +106,7 @@ class JoueursListe extends React.Component {
   
   const styles = StyleSheet.create({
     main_container: {
-      flex: 1,
+      flex: 4,
       marginTop: 35
     },
     textinput: {
@@ -103,9 +114,48 @@ class JoueursListe extends React.Component {
       marginRight: 5,
       height: 50,
       borderColor: '#000000',
-      borderWidth: 1,
-      paddingLeft: 5
+      paddingLeft: 5,
+      borderWidth: 0.2,
+      borderRadius:20,
     },
+
+    joueursContainer: {
+        margin:5,
+        flex: 1,
+        flexDirection:'row'
+    },
+
+    jerseyNameContainer: {
+        flex: 2,
+        flexWrap: 'wrap'
+    },
+
+    others: {
+        
+        flex: 1,
+        flexWrap: 'wrap'
+    },
+
+    listContainer: {
+        flex: 1,
+        flexWrap: 'wrap'
+    },
+
+    buttonContainer: {
+        margin: 10,
+        marginLeft: 160,
+        marginRight: 160,
+        borderWidth: 0.2,
+        borderRadius:20,
+        borderColor: 'white',
+        backgroundColor: '#33FF61',
+
+      },
+
+      textButtonContainer: {
+          color: 'white'
+      },
+
     loading_container: {
       position: 'absolute',
       left: 0,

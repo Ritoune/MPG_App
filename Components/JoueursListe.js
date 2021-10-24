@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TextInput, Button, FlatList, ScrollView, ActivityIndicator, Text, Picker, Image} from 'react-native'
 import JoueurItem from '../Components/JoueurItem'
 import { getAllPlayers } from '../API/API_Joueurs'
+import { getAllClubs } from '../API/API_Clubs'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 class JoueursListe extends React.Component {
 
@@ -9,10 +10,12 @@ class JoueursListe extends React.Component {
       super(props)
       this.searchedText = ""
       this.searchedPost = ""
+      //this.clubs
       //this.page = 0
       //this.totalPages = 0
       this.state = {
         searchedPost: "0",
+        clubs: [],
         joueurs: [],
         joueursFiltrésNom: [],
         joueursFiltrésFinal: [],
@@ -21,17 +24,16 @@ class JoueursListe extends React.Component {
     }
   
     componentDidMount(){
-        console.log("En cours de construction")
         this._searchPlayers()
+        //console.log(this.state.joueursFiltrésFinal)
     }
+
     _loadPlayers() {
         this.setState({ isLoading: true })
         getAllPlayers().then(data => {
-            console.log("tri en cours")
             data.poolPlayers.sort(function(a, b) {
               return b.quotation - a.quotation;
               }),
-              console.log("tri terminé")
             this.setState({
                 
                 joueurs: [ ...this.state.joueurs, ...data.poolPlayers ],
@@ -39,7 +41,19 @@ class JoueursListe extends React.Component {
                 joueursFiltrésFinal: [ ...this.state.joueursFiltrésFinal, ...data.poolPlayers ],
                 isLoading: false
             })
-            console.log("Dans la liste")
+        })
+
+        
+        //console.log(this.state.clubs)
+        getAllClubs().then(data => {
+            this.setState({
+                clubs: Object.entries(data)[0][1],
+                isLoading: false,
+            })
+            //console.log(Object.entries(this.state.clubs))
+            /*Object.entries(this.state.clubs).forEach((club) => {
+                console.log(club[1].id)
+            })*/
         })
     }
   
@@ -102,7 +116,6 @@ class JoueursListe extends React.Component {
                 this.setState({ joueursFiltrésNom: copieJoueurs })
                 this.setState({ joueursFiltrésFinal: [] })
                 this.setState({ joueursFiltrésFinal: copieJoueurs })
-                console.log(copieJoueurs)
             }
 
             else {
@@ -117,16 +130,31 @@ class JoueursListe extends React.Component {
         console.log("Pas de Poste")
 
         this.setState({ joueursFiltrésFinal: [] })
-            const copieJoueurs=[]
+            const copieJoueurs1=[]
+            const copieJoueurs2=[]
             const post=this.state.searchedPost
             this.state.joueursFiltrésNom.forEach(function (joueur) {
             if (post==joueur.ultraPosition) {
-                copieJoueurs.push(joueur)
+                copieJoueurs1.push(joueur)
             }
         })
-        this.setState({ joueursFiltrésFinal: copieJoueurs })
         console.log("poste : "+post)
+
+        if (this.state.searchedText!=undefined) {
+            const txt=this.state.searchedText.toLowerCase()
+            copieJoueurs1.forEach(function (joueur) {
+                //console.log(joueur.lastName)
+                var name=joueur.lastName.toLowerCase()
+                if (name.includes(txt))
+                copieJoueurs2.push(joueur)
+            })
+            this.setState({ joueursFiltrésFinal: copieJoueurs2 })
+            
         }
+        else {this.setState({ joueursFiltrésFinal: copieJoueurs1 })}
+        }
+
+        //console.log(this.state.clubs)
         
     }
 
@@ -198,12 +226,10 @@ class JoueursListe extends React.Component {
                 >
                     <Picker.Item label="Sélectionner un poste" value="0" />
                     <Picker.Item label="Gardien" value="10" />
-                    <Picker.Item label="Défenseur" value="25" />
-                    <Picker.Item label="       Défenseur central" value="20" />
-                    <Picker.Item label="       Latéral" value="21" />
-                    <Picker.Item label="Milieu" value="35" />
-                    <Picker.Item label="       Milieu défensif" value="30" />
-                    <Picker.Item label="       Milieu offensif" value="31" />
+                    <Picker.Item label="Défenseur central" value="20" />
+                    <Picker.Item label="Latéral" value="21" />
+                    <Picker.Item label="Milieu défensif" value="30" />
+                    <Picker.Item label="Milieu offensif" value="31" />
                     <Picker.Item label="Attaquant" value="40" />
                 </Picker>
             </View>
@@ -213,6 +239,7 @@ class JoueursListe extends React.Component {
           </TouchableOpacity>
 
           <View style={styles.joueursContainer}>
+          <Text style={styles.jerseyNameContainer}>Maillot</Text>
             <Text style={styles.jerseyNameContainer}>Nom</Text>
             <Text style={styles.others}>Note</Text>
             <Text style={styles.others}>Buts</Text>
@@ -223,7 +250,7 @@ class JoueursListe extends React.Component {
           <FlatList style={styles.Container}
             data={this.state.joueursFiltrésFinal}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({item}) => <JoueurItem joueur={item}/>}
+            renderItem={({item}) => <JoueurItem joueur={item} data={this.state.clubs}/>}
             /*onEndReachedThreshold={0.5}
             onEndReached={() => {
                 if (this.page < this.totalPages) {

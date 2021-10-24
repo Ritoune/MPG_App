@@ -46,6 +46,7 @@ class JoueurItem extends React.Component {
         var poste=''
         switch(joueur.ultraPosition){
             case 10:
+            //this.setState({ ultraPosition: 'G'})
             poste='G'
             break;
 
@@ -118,12 +119,14 @@ const styles = StyleSheet.create({
 
   lastName: {
       flex: 2,
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
+      marginLeft: 5
   },
   
   others: {
     flex: 1,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginLeft: 5
   }
 })
 

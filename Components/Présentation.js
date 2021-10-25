@@ -2,11 +2,13 @@ import React from 'react'
 import { StyleSheet, View, TextInput, Button, FlatList, ScrollView, ActivityIndicator, Text, Picker, Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
+//Component de la première view de présentation
 class Presentation extends React.Component {
 
     
     render() {
 
+      //Affichage de la view de présentation et redirection vers la view JoueursListe
         return (
           <View style={styles.main_container}>
               <Image style={styles.logo} source={require('../assets/logo.png')}/>
@@ -23,6 +25,7 @@ class Presentation extends React.Component {
 
 }
 
+//Externalisation des styles
 const styles = StyleSheet.create({
 
     main_container: {
@@ -49,20 +52,16 @@ const styles = StyleSheet.create({
       },
 
     titre: {
-      //flex: 3,
       marginTop:35,
       marginLeft: 50,
       fontSize: 25
-      //backgroundColor: 'white'
     },
 
     auteur: {
-        //flex: 3,
         marginTop: 35,
         marginLeft: 80,
         marginBottom: 35,
         fontSize: 20
-        //backgroundColor: 'white'
       },
 
     buttonContainer: {
@@ -73,7 +72,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.2,
         borderRadius:20,
         borderColor: 'white',
-        backgroundColor: '#5BBA49',
+        backgroundColor: '#5BBA49'
 
       },
 
@@ -86,4 +85,5 @@ const styles = StyleSheet.create({
     
   })
 
+//Exportation du component Presentation
 export default Presentation

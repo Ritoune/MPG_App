@@ -1,7 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, ActivityIndicator, Text, ScrollView, Image} from 'react-native'
+import { View, StyleSheet, ActivityIndicator, Text, Image} from 'react-native'
 
+//Component affichant la fiche technique d'un joueur
 class DetailPlayer extends React.Component {
+  //Constructeur : initialisation de tous les paramètres du state utilisé
     constructor(props) {
       super(props)
       this.state = {
@@ -20,24 +22,25 @@ class DetailPlayer extends React.Component {
       }
     }
   
+    //Fonction appelée lors de la construction du component
+    //Mise à jour du state avec toute les valeurs envoyés par le component JoueurItem
     componentDidMount() {
-        console.log(this.props)
-    console.log("Param : "+this.props.navigation.state.params.joueurId)
-      this.setState({
-          joueurId: this.props.navigation.state.params.joueurId,
-          firstName: this.props.navigation.state.params.firstName,
-          lastName: this.props.navigation.state.params.lastName,
-          ultraPosition: this.props.navigation.state.params.ultraPosition,
-          clubId: this.props.navigation.state.params.clubId,
-          averageRating: this.props.navigation.state.params.averageRating,
-          totalGoals: this.props.navigation.state.params.totalGoals,
-          totalStartedMacthes: this.props.navigation.state.params.totalStartedMacthes,
-          totalPlayedMatches: this.props.navigation.state.params.totalPlayedMatches,
-          maillot: this.props.navigation.state.params.maillot,
-          nomClub: this.props.navigation.state.params.nomClub
-        })
+        this.setState({
+            joueurId: this.props.navigation.state.params.joueurId,
+            firstName: this.props.navigation.state.params.firstName,
+            lastName: this.props.navigation.state.params.lastName,
+            ultraPosition: this.props.navigation.state.params.ultraPosition,
+            clubId: this.props.navigation.state.params.clubId,
+            averageRating: this.props.navigation.state.params.averageRating,
+            totalGoals: this.props.navigation.state.params.totalGoals,
+            totalStartedMacthes: this.props.navigation.state.params.totalStartedMacthes,
+            totalPlayedMatches: this.props.navigation.state.params.totalPlayedMatches,
+            maillot: this.props.navigation.state.params.maillot,
+            nomClub: this.props.navigation.state.params.nomClub
+          })
     }
   
+    //Affichage de l'animation de chargement
     _displayLoading() {
       if (this.state.isLoading) {
         return (
@@ -48,23 +51,11 @@ class DetailPlayer extends React.Component {
       }
     }
   
-    /*_displayPlayer() {
-      //const { film } = this.state
-      if (this.state.joueur != undefined) {
-        return (
-          <ScrollView>
-              <Text>Nom du joueur : {this.state.joueur.lastName} </Text>
-          </ScrollView>
-        )
-      }
-      else {<Text>Erreur de transmission de données</Text>}
-    }*/
-  
     render() {
+        //Attribution du bon poste en fonction de la valeur du paramètre du state ultraPosition
         var poste=''
         switch(this.state.ultraPosition){
             case 10:
-            //this.setState({ ultraPosition: 'G'})
             poste='Gardien de but'
             break;
 
@@ -91,6 +82,7 @@ class DetailPlayer extends React.Component {
         
       return (
           
+          //Affichage des statistiques du joueur sélectionné par l'utilisateur
           <View>
               <Image style={styles.jersey} source={{uri: this.state.maillot,}}/>
               <Text style={styles.nom}> {this.state.firstName} </Text>
@@ -120,74 +112,44 @@ class DetailPlayer extends React.Component {
     }
   }
 
+  //Externalisation des styles
   const styles = StyleSheet.create({
     
-  
     jersey: {
-      //flex: 2,
-      //flexWrap: 'wrap',
       width: 60,
       height: 60,
       marginTop: 20,
-      marginLeft: 160,
-      //marginRight: 150,
+      marginLeft: 160
   },
 
     nom: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
         fontWeight: 'bold',
         fontSize: 20,
         color: '#5BBA49',
         marginTop: 18,
         marginLeft: 160,
-        marginRight: 40,
-
-        
-        
+        marginRight: 40
     },
 
     prenom: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
-        //marginTop:10,
         fontSize: 28,
         fontWeight: 'bold',
         color: '#5BBA49',
         marginLeft: 132,
-        marginRight: 40,
-        //justifyContent: 'space-between',
-        //alignItems: 'center',
+        marginRight: 40
     },
 
     poste: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
         marginTop:30,
         marginLeft: 120,
         marginRight: 40,
-        fontSize: 16,
-        //justifyContent: 'space-between',
-        //alignItems: 'center',
+        fontSize: 16
     },
 
     club: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
-        //marginTop:30,
         fontSize: 16,
         marginLeft: 140,
         marginRight: 40,
-        //justifyContent: 'space-between',
-        //alignItems: 'center',
     },
 
     statsContainer: {
@@ -197,42 +159,27 @@ class DetailPlayer extends React.Component {
     },
 
     stat: {
-        //flex: 2,
         flexDirection:'row'
     },
         
     gauche: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
         marginTop:5,
         marginBottom:5,
         flex: 1,
         flexWrap: 'wrap',
-        //borderRightWidth: 0.2,
-        marginLeft: 20,
-        
-        //marginRight: 40,
-        //justifyContent: 'space-between',
-        //alignItems: 'center',
+        marginLeft: 20
     },
 
     droite: {
-        //flex: 2,
-        //flexWrap: 'wrap',
-        //width: 25,
-        //height: 15,
         marginTop:5,
         marginBottom:5,
         flex: 1,
         flexWrap: 'wrap',
-        marginLeft: 30,
-        //marginRight: 40,
-        //justifyContent: 'space-between',
+        marginLeft: 30
     },
     
   })
 
+  //Exportation du component DetailPlayer
   export default DetailPlayer
   

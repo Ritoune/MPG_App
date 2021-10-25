@@ -1,73 +1,34 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-//import { getAllClubs } from '../API/API_Clubs'
 
+//Component JoueurItem correspondant à chaque élément de la Flatlist du component JoueursListe
 class JoueurItem extends React.Component {
+
+  //Constructeur : intialisation de chaque paramètre du state utilisés
     constructor(props) {
         super(props)
-        //this.clubs,
         this.state = {
-          //ultraPosition: '',
           isLoading: false,
           clubs: []
         }
-        //console.log(props)
-        //console.log(this.props.data)
       }
 
+      //Mise à jour du state à la construction du component, avec les données collectés de l'api donnant la liste des joueurs
       componentDidMount()
       {
           this.setState({clubs: this.props.data})
-          //console.log(this.props.data)
-          //const listClubs=this.props.data
-          //console.log(this.state.clubs)
-
-        /*this.state.data.forEach(function (club) {
-            if (club.id==this.clubId) {
-                console.log("Trouvé")
-            }
-        })*/
       }
 
       
 
     render() {
-        //console.log(this.props)
         const { joueur, displayDetailPlayer} = this.props
-        
 
-        /*switch(joueur.ultraPosition){
-            case 10:
-            console.log("Gardien de but")
-            this.setState({ ultraPosition: 'G'})
-            break;
-
-            case 20:
-            this.setState({ ultraPosition: 'D'})
-            break;
-
-            case 21:
-            this.setState({ ultraPosition: 'L'})
-            break;
-
-            case 30:
-            this.setState({ ultraPosition: 'MD'})
-            break;
-
-            case 31:
-            this.setState({ ultraPosition: 'MO'})
-            break;
-
-            case 40:
-            this.setState({ ultraPosition: 'A'})
-            break;
-        }*/
-
+        //Attribution du bon poste en fonction de la valeur de ultraPosition
         var poste=''
         switch(joueur.ultraPosition){
             case 10:
-            //this.setState({ ultraPosition: 'G'})
             poste='G'
             break;
 
@@ -92,6 +53,8 @@ class JoueurItem extends React.Component {
             break;
         }
 
+        //Attribution de l'arrondi de la moyenne
+        //Prise en charge des cas de joueurs non notés 
         var noteRounded=0
         if(joueur.stats.averageRating==undefined)
         {
@@ -102,6 +65,7 @@ class JoueurItem extends React.Component {
             noteRounded=Math.round((joueur.stats.averageRating)*10)/10
         }
 
+        //Prise en charge des joueurs qui n'ont pas encore marqué et qui n'ont pas de valeur pour totalGoals dans l'api 
         var buts=0
         if(joueur.stats.totalGoals==undefined)
         {
@@ -112,22 +76,17 @@ class JoueurItem extends React.Component {
             buts=joueur.stats.totalGoals
         }
 
+        //Attribution du bon maillot et de la bonne abréviation du nom du club pour chaque joueur
         var nomClub=" "
         var urlJersey=" "
         Object.entries(this.state.clubs).forEach((club) => {
-            //console.log(club[1])
             if (joueur.clubId==club[1].id) {
                 urlJersey=club[1].defaultJerseyUrl
                 nomClub=club[1].shortName
             }
-
-            
         })
-        //console.log(urlJersey)
-        //console.log("Id du joueur : "+joueur.id)
 
-        
-
+        //Affichage de chaque élément de la FlatList du component JoueursListe
         return (
           <TouchableOpacity style={styles.main_container} onPress={() => displayDetailPlayer(joueur.id, joueur.firstName,joueur.lastName, joueur.ultraPosition, joueur.clubId, noteRounded, joueur.stats.totalGoals, joueur.stats.totalMatches, joueur.stats.totalStartedMatches, joueur.stats.totalPlayedMatches, urlJersey, nomClub)}>
             <View style={styles.playerContainer}> 
@@ -143,6 +102,7 @@ class JoueurItem extends React.Component {
     }
 }
 
+//Externalisation des styles
 const styles = StyleSheet.create({
   main_container: {
     height: 30,
@@ -160,8 +120,6 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    //flex: 2,
-    //flexWrap: 'wrap',
     width: 25,
     height: 25,
     marginLeft: 20,
@@ -176,4 +134,5 @@ const styles = StyleSheet.create({
   }
 })
 
+//Exportation du component JoueurItem
 export default JoueurItem

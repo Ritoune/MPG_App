@@ -1,10 +1,13 @@
 import {createAppContainer} from 'react-navigation'
-import {createStackNavigator, HeaderBackground} from 'react-navigation-stack'
+import {createStackNavigator} from 'react-navigation-stack'
 import JoueursListe from '../Components/JoueursListe'
 import DetailPlayer from '../Components/DetailPlayer'
 import Presentation from '../Components/Présentation'
 
+//Creation du navigateur de vue avec la librairy react navigation
 const MPGStackNavigator = createStackNavigator({
+  
+  //View Presentation
     Présentation: {
         screen: Presentation,
         navigationOptions: {
@@ -12,12 +15,15 @@ const MPGStackNavigator = createStackNavigator({
         }
     },
 
+    //View JoueursListe
     JoueursListe: {
         screen: JoueursListe,
         navigationOptions: {
             headerShown: false
         }
     },
+
+    //View DetailPlayer
     DetailPlayer: { 
       screen: DetailPlayer,
       navigationOptions: {
@@ -34,4 +40,5 @@ const MPGStackNavigator = createStackNavigator({
     }
   })
   
+  //Exportation du navigateur de vue MPGStackNavigator
   export default createAppContainer(MPGStackNavigator)

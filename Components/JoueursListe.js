@@ -1,19 +1,18 @@
 import React from 'react'
-import { StyleSheet, View, TextInput, Button, FlatList, ScrollView, ActivityIndicator, Text, Picker, Image} from 'react-native'
+import { StyleSheet, View, TextInput, FlatList, ActivityIndicator, Text, Picker, Image} from 'react-native'
 import JoueurItem from '../Components/JoueurItem'
 import { getAllPlayers } from '../API/API_Joueurs'
 import { getAllClubs } from '../API/API_Clubs'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
+//Component JoueursListe permettant d'afficher et de filtrer la liste des joueurs envoyés par l'api
 class JoueursListe extends React.Component {
 
+  //Constructeur : initialisation de tous les paramètres du state utilisé
     constructor(props) {
       super(props)
       this.searchedText = ""
       this.searchedPost = ""
-      //this.clubs
-      //this.page = 0
-      //this.totalPages = 0
       this.state = {
         searchedPost: "0",
         clubs: [],
@@ -24,17 +23,22 @@ class JoueursListe extends React.Component {
       }
     }
   
+    //Lancement d'une recherche à la construction du component
     componentDidMount(){
         this._searchPlayers()
-        //console.log(this.state.joueursFiltrésFinal)
     }
 
+    //Fonction permettant de réceptionner les joueurs de l'api
     _loadPlayers() {
         this.setState({ isLoading: true })
         getAllPlayers().then(data => {
+
+          //Tri des joueurs par ordre décroissant sur leur cote
             data.poolPlayers.sort(function(a, b) {
               return b.quotation - a.quotation;
               }),
+
+            //Remplissage des trois array utilisés
             this.setState({
                 
                 joueurs: [ ...this.state.joueurs, ...data.poolPlayers ],
@@ -43,85 +47,47 @@ class JoueursListe extends React.Component {
                 isLoading: false
             })
         })
-
         
-        //console.log(this.state.clubs)
+        //Fonction permettant de réceptionner tous les clubs de l'api
         getAllClubs().then(data => {
             this.setState({
                 clubs: Object.entries(data)[0][1],
                 isLoading: false,
             })
-            //console.log(Object.entries(this.state.clubs))
-            /*Object.entries(this.state.clubs).forEach((club) => {
-                console.log(club[1].id)
-            })*/
         })
     }
   
+    //Fonction permettant de mettre à jour le state en fonction des caractères ecrits par l'utilisateur dans la barre de recherche
     _searchTextInputChanged(text) {
-    //this.setState(this.searchedText= text)
-      //this.searchedText = text 
-
-        
-        //Pour rendre à chaque caractère
         this.setState({ searchedText: text })
-        //Pour afficher la liste a chaque nouveau caractère
-        //this._loadFilms()*/
     }
   
-    //Recherche par nom uniquement 
-   /* _displaySearchedText() {
-        console.log(this.state.searchedText)
-        if (this.state.searchedText.length > 0) {
-
-            const txt=this.state.searchedText.toLowerCase()
-            console.log(txt)
-            const copieJoueurs=[]
-            if (this.state.joueurs==undefined)
-            {
-                console.log("Liste Vide")
-            }
-            this.state.joueurs.forEach(function (joueur) {
-                //console.log(joueur.lastName)
-                var name=joueur.lastName.toLowerCase()
-                if (name.includes(txt))
-                copieJoueurs.push(joueur)
-            });
-            this.setState({ joueursFiltrésNom: [] })
-            this.setState({ joueursFiltrésNom: copieJoueurs })
-            console.log(copieJoueurs)
-        }
-        else {console.log("Pas de texte recherché")}
-    }*/
-
+    //Fonction permettant d'afficher le component DetailPlayer et de lui envoyer toute la data requise
     _displayDetailPlayer = (joueurId, firstName,lastName, ultraPosition, clubId, averageRating, totalGoals, totalMatches, totalStartedMacthes, totalPlayedMatches, maillot, nomClub) => {
-        //console.log(this.props.navigation)
-        if (joueurId==undefined) {
-            console.log("Pas de joueur")
-        }
-        else (console.log(maillot))
         this.props.navigation.navigate("DetailPlayer", { joueurId: joueurId, firstName: firstName,lastName: lastName, ultraPosition: ultraPosition, clubId: clubId, averageRating: averageRating, totalGoals: totalGoals, totalMatches: totalMatches, totalStartedMacthes: totalStartedMacthes, totalPlayedMatches: totalPlayedMatches, maillot: maillot, nomClub: nomClub })
     }
 
+    //Fonction permettant de filtrer la liste de joueurs sur leur nom et sur leur poste
    _displaySearchedText() {
-        console.log(this.state.searchedText)
+        
+        //S'il n'y a pas de filtrage sur le poste
         if (this.state.searchedPost=="0") {
 
             if (this.state.searchedText!=undefined) {
 
                 const txt=this.state.searchedText.toLowerCase()
-                console.log(txt)
                 const copieJoueurs=[]
                 if (this.state.joueurs==undefined)
                 {
                     console.log("Liste Vide")
                 }
                 this.state.joueurs.forEach(function (joueur) {
-                    //console.log(joueur.lastName)
                     var name=joueur.lastName.toLowerCase()
                     if (name.includes(txt))
                     copieJoueurs.push(joueur)
                 });
+
+                //Mise à jour du state avec le nouvel array de joueurs
                 this.setState({ joueursFiltrésNom: [] })
                 this.setState({ joueursFiltrésNom: copieJoueurs })
                 this.setState({ joueursFiltrésFinal: [] })
@@ -136,9 +102,8 @@ class JoueursListe extends React.Component {
             }
         }
 
+        //S'il y un filtrage sur le poste
         else {
-        console.log("Pas de Poste")
-
         this.setState({ joueursFiltrésFinal: [] })
             const copieJoueurs1=[]
             const copieJoueurs2=[]
@@ -148,12 +113,10 @@ class JoueursListe extends React.Component {
                 copieJoueurs1.push(joueur)
             }
         })
-        console.log("poste : "+post)
 
         if (this.state.searchedText!=undefined) {
             const txt=this.state.searchedText.toLowerCase()
             copieJoueurs1.forEach(function (joueur) {
-                //console.log(joueur.lastName)
                 var name=joueur.lastName.toLowerCase()
                 if (name.includes(txt))
                 copieJoueurs2.push(joueur)
@@ -163,16 +126,12 @@ class JoueursListe extends React.Component {
         }
         else {this.setState({ joueursFiltrésFinal: copieJoueurs1 })}
         }
-
-        //console.log(this.state.clubs)
         
     }
 
+    //Fonction appelée pour lancer une rechercher
     _searchPlayers() {
-      //this.page = 0
-      //this.totalPages = 0
       this.setState({
-        //joueurs: [],
       }, () => {
           this._loadPlayers()
       })
@@ -180,6 +139,7 @@ class JoueursListe extends React.Component {
 
     
   
+    //Fonction permettant d'afficher l'animation de chargement
     _displayLoading() {
       if (this.state.isLoading) {
         return (
@@ -190,36 +150,14 @@ class JoueursListe extends React.Component {
       }
     }
 
-
-    
-
+    //Fonction permettant de modifier le state en fonction de la valeur du Picker choisie par l'utilisateur
     _setSelectedPicker(value) {
-        //console.log("Choix : "+ value)
         this.setState({ searchedPost: value })
-
-        /*this.setState({ joueursFiltrés: [] })
-
-        const copieJoueurs=[]
-        console.log("Not Pushed")
-        this.state.joueursFiltrés.forEach(function (joueur) {
-            console.log(joueur.ultraPosition)
-        if (value==joueur.ultraPosition) {
-                console.log("Pushed")
-                copieJoueurs.push(joueur)
-            }
-        });
-        this.setState({ joueursFiltrés: copieJoueurs })*/
-
-        //console.log(this.state.searchedPost)*/
     }
-
-   /* _displayDetailForFilm = (idFilm) => {
-        console.log("Display film with id " + idFilm)
-        this.props.navigation.navigate("FilmDetail", { idFilm: idFilm })
-    }*/
   
     render() {
-        console.log(this.props)
+
+      //Affichage des filtrages et de leurs résultats sous forme de liste de JoueurItem
       return (
         <View style={styles.main_container}>
             <Image style={styles.logo} source={require('/Users/henripetrelli/Documents/CRNA_MPG/MPG_App/assets/logo.png')}/>
@@ -263,13 +201,6 @@ class JoueursListe extends React.Component {
             data={this.state.joueursFiltrésFinal}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({item}) => <JoueurItem joueur={item} data={this.state.clubs} displayDetailPlayer={this._displayDetailPlayer}/>}
-            /*onEndReachedThreshold={0.5}
-            onEndReached={() => {
-                if (this.page < this.totalPages) {
-                   this._loadFilms()
-                }
-            }}*/
-            //renderItem={({item}) => <JoueurItem joueur={item} displayDetailPlayer={this._displayDetailPlayer} />}
           />
           {this._displayLoading()}
         </View>
@@ -277,6 +208,7 @@ class JoueursListe extends React.Component {
     }
   }
   
+  //Externalisation des styles
   const styles = StyleSheet.create({
     main_container: {
       flex: 3,
@@ -288,7 +220,7 @@ class JoueursListe extends React.Component {
         width: 100,
         height: 40,
         marginLeft: 140,
-        margin:50,
+        margin:50
     },
 
     textinput: {
@@ -298,7 +230,7 @@ class JoueursListe extends React.Component {
       borderColor: '#000000',
       paddingLeft: 5,
       borderWidth: 0.2,
-      borderRadius:20,
+      borderRadius:20
     },
 
     joueursContainer: {
@@ -329,7 +261,7 @@ class JoueursListe extends React.Component {
         borderWidth: 0.2,
         borderRadius:20,
         borderColor: 'white',
-        backgroundColor: '#5BBA49',
+        backgroundColor: '#5BBA49'
 
       },
 
@@ -341,12 +273,7 @@ class JoueursListe extends React.Component {
       pickerContainer: {
         marginTop:0,
         marginLeft: 5,
-        marginRight: 5,
-        //height: 50,
-        //borderColor: '#000000',
-        //paddingLeft: 5,
-       // borderWidth: 0.2,
-       // borderRadius:20,
+        marginRight: 5
     },
 
     loading_container: {
@@ -360,4 +287,5 @@ class JoueursListe extends React.Component {
     }
   })
   
+  //Exportation du component JoueursListe
   export default JoueursListe

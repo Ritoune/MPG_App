@@ -9,7 +9,7 @@ class Presentation extends React.Component {
 
         return (
           <View style={styles.main_container}>
-              <Image style={styles.logo} source={require('/Users/henripetrelli/Documents/CRNA_MPG/MPG_App/assets/logo.png')}/>
+              <Image style={styles.logo} source={require('../assets/logo.png')}/>
               <View style={styles.presentation}>
                 <Text style={styles.titre}>Test technique MPG </Text>
                 <Text style={styles.auteur}>Par Henri Petrelli</Text>

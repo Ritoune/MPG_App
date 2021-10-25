@@ -18,7 +18,7 @@ const MPGStackNavigator = createStackNavigator({
             headerShown: false
         }
     },
-    DetailPlayer: { // Encore une fois j'ai mis le même nom que celui du component mais libre à vous de choisir un nom différent
+    DetailPlayer: { 
       screen: DetailPlayer,
       navigationOptions: {
           title: 'Fiche du joueur',

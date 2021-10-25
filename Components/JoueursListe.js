@@ -4,6 +4,8 @@ import JoueurItem from '../Components/JoueurItem'
 import { getAllPlayers } from '../API/API_Joueurs'
 import { getAllClubs } from '../API/API_Clubs'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { withNavigation } from 'react-navigation'
+
 class JoueursListe extends React.Component {
 
     constructor(props) {
@@ -93,6 +95,15 @@ class JoueursListe extends React.Component {
         else {console.log("Pas de texte recherché")}
     }*/
 
+    _displayDetailPlayer = (joueurId, quotation) => {
+        //console.log(this.props.navigation)
+        if (joueurId==undefined) {
+            console.log("Pas de joueur")
+        }
+        else (console.log(joueurId))
+        this.props.navigation.navigate("DetailPlayer", { joueurId: joueurId , quotation: quotation})
+    }
+
    _displaySearchedText() {
         console.log(this.state.searchedText)
         if (this.state.searchedPost=="0") {
@@ -180,6 +191,9 @@ class JoueursListe extends React.Component {
       }
     }
 
+
+    
+
     _setSelectedPicker(value) {
         //console.log("Choix : "+ value)
         this.setState({ searchedPost: value })
@@ -206,6 +220,7 @@ class JoueursListe extends React.Component {
     }*/
   
     render() {
+        console.log(this.props)
       return (
         <View style={styles.main_container}>
             <Image style={styles.logo} source={require('/Users/henripetrelli/Documents/CRNA_MPG/MPG_App/assets/logo.png')}/>
@@ -250,14 +265,14 @@ class JoueursListe extends React.Component {
           <FlatList style={styles.Container}
             data={this.state.joueursFiltrésFinal}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({item}) => <JoueurItem joueur={item} data={this.state.clubs}/>}
+            renderItem={({item}) => <JoueurItem joueur={item} data={this.state.clubs} displayDetailPlayer={this._displayDetailPlayer}/>}
             /*onEndReachedThreshold={0.5}
             onEndReached={() => {
                 if (this.page < this.totalPages) {
                    this._loadFilms()
                 }
-            }}
-            renderItem={({item}) => <FilmItem film={item} displayDetailForFilm={this._displayDetailForFilm} />}*/
+            }}*/
+            //renderItem={({item}) => <JoueurItem joueur={item} displayDetailPlayer={this._displayDetailPlayer} />}
           />
           {this._displayLoading()}
         </View>

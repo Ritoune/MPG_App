@@ -30,9 +30,11 @@ class JoueurItem extends React.Component {
         })*/
       }
 
+      
+
     render() {
         //console.log(this.props)
-        const { joueur} = this.props
+        const { joueur, displayDetailPlayer} = this.props
         
 
         /*switch(joueur.ultraPosition){
@@ -119,13 +121,13 @@ class JoueurItem extends React.Component {
 
             
         })
-        console.log(urlJersey)
-        //console.log(joueur.clubId)
+        //console.log(urlJersey)
+        //console.log("Id du joueur : "+joueur.id)
 
         
 
         return (
-          <TouchableOpacity style={styles.main_container} /*onPress={() => displayDetailForFilm(film.id)}*/>
+          <TouchableOpacity style={styles.main_container} onPress={() => displayDetailPlayer(joueur.id, joueur.quotation)}>
             <View style={styles.playerContainer}> 
                 <Image style={styles.logo} source={{uri: urlJersey,}}/>
                 <Text style={styles.lastName}>{joueur.lastName}</Text>

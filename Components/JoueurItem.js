@@ -112,11 +112,13 @@ class JoueurItem extends React.Component {
             buts=joueur.stats.totalGoals
         }
 
+        var nomClub=" "
         var urlJersey=" "
         Object.entries(this.state.clubs).forEach((club) => {
             //console.log(club[1])
             if (joueur.clubId==club[1].id) {
                 urlJersey=club[1].defaultJerseyUrl
+                nomClub=club[1].shortName
             }
 
             
@@ -127,7 +129,7 @@ class JoueurItem extends React.Component {
         
 
         return (
-          <TouchableOpacity style={styles.main_container} onPress={() => displayDetailPlayer(joueur.id, joueur.quotation)}>
+          <TouchableOpacity style={styles.main_container} onPress={() => displayDetailPlayer(joueur.id, joueur.firstName,joueur.lastName, joueur.ultraPosition, joueur.clubId, noteRounded, joueur.stats.totalGoals, joueur.stats.totalMatches, joueur.stats.totalStartedMatches, joueur.stats.totalPlayedMatches, urlJersey, nomClub)}>
             <View style={styles.playerContainer}> 
                 <Image style={styles.logo} source={{uri: urlJersey,}}/>
                 <Text style={styles.lastName}>{joueur.lastName}</Text>

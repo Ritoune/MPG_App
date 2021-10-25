@@ -4,7 +4,6 @@ import JoueurItem from '../Components/JoueurItem'
 import { getAllPlayers } from '../API/API_Joueurs'
 import { getAllClubs } from '../API/API_Clubs'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { withNavigation } from 'react-navigation'
 
 class JoueursListe extends React.Component {
 
@@ -95,13 +94,13 @@ class JoueursListe extends React.Component {
         else {console.log("Pas de texte recherché")}
     }*/
 
-    _displayDetailPlayer = (joueurId, quotation) => {
+    _displayDetailPlayer = (joueurId, firstName,lastName, ultraPosition, clubId, averageRating, totalGoals, totalMatches, totalStartedMacthes, totalPlayedMatches, maillot, nomClub) => {
         //console.log(this.props.navigation)
         if (joueurId==undefined) {
             console.log("Pas de joueur")
         }
-        else (console.log(joueurId))
-        this.props.navigation.navigate("DetailPlayer", { joueurId: joueurId , quotation: quotation})
+        else (console.log(maillot))
+        this.props.navigation.navigate("DetailPlayer", { joueurId: joueurId, firstName: firstName,lastName: lastName, ultraPosition: ultraPosition, clubId: clubId, averageRating: averageRating, totalGoals: totalGoals, totalMatches: totalMatches, totalStartedMacthes: totalStartedMacthes, totalPlayedMatches: totalPlayedMatches, maillot: maillot, nomClub: nomClub })
     }
 
    _displaySearchedText() {
@@ -232,8 +231,7 @@ class JoueursListe extends React.Component {
             onSubmitEditing={() => this._searchPlayers()}
           />
 
-            <View >
-                
+            
                 <Picker
                     selectedValue={this.state.searchedPost}
                     style={styles.pickerContainer}
@@ -247,7 +245,6 @@ class JoueursListe extends React.Component {
                     <Picker.Item label="Milieu offensif" value="31" />
                     <Picker.Item label="Attaquant" value="40" />
                 </Picker>
-            </View>
 
           <TouchableOpacity style={styles.buttonContainer} onPress={() => this._displaySearchedText()}>
               <Text style={styles.textButtonContainer}>Rechercher</Text>
@@ -283,7 +280,8 @@ class JoueursListe extends React.Component {
   const styles = StyleSheet.create({
     main_container: {
       flex: 3,
-      marginTop: 35
+      marginTop: 35,
+      backgroundColor: 'white'
     },
 
     logo: {
@@ -341,13 +339,14 @@ class JoueursListe extends React.Component {
       },
 
       pickerContainer: {
+        marginTop:0,
         marginLeft: 5,
         marginRight: 5,
-        height: 50,
-        borderColor: '#000000',
-        paddingLeft: 5,
-        borderWidth: 0.2,
-        borderRadius:20,
+        //height: 50,
+        //borderColor: '#000000',
+        //paddingLeft: 5,
+       // borderWidth: 0.2,
+       // borderRadius:20,
     },
 
     loading_container: {

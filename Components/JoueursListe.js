@@ -160,7 +160,7 @@ class JoueursListe extends React.Component {
       //Affichage des filtrages et de leurs résultats sous forme de liste de JoueurItem
       return (
         <View style={styles.main_container}>
-            <Image style={styles.logo} source={require('/Users/henripetrelli/Documents/CRNA_MPG/MPG_App/assets/logo.png')}/>
+            <Image style={styles.logo} source={require('../assets/logo.png')}/>
           
           <TextInput
             style={styles.textinput}

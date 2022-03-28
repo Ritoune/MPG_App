@@ -4,7 +4,7 @@
     "slug": "MPG_App",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logoSquare.png",
+    
     "splash": {
       "image": "./assets/logo.png",
       "resizeMode": "contain",
@@ -17,13 +17,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "Henri"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logoSquare.png",
+        
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ritoune.MPG_App"
     },
     "web": {
       "favicon": "./assets/logo.png"
